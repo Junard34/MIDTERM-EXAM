@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-commerce Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        padding: 20px;
+      }
+      .product-image {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center bg-dark text-white p-10">
+        E-Commerce Dashboard</h1>
+
+      <div id="notification"></div>
+
+      <div class="row" id="product-list"></div>
+    </div>
+
+    <script>
+      const products = [
+        {
+          id: 1,
+          name: "Laptop",
+          price: 1500,
+          stock: 5,
+          image: "laptop.png",
+        },
+        {
+          id: 2,
+          name: "headphone",
+          price: 100,
+          stock: 10,
+          image: "headphones.jpg",
+        },
+        {
+          id: 3,
+          name: "Keyboard",
+          price: 50,
+          stock: 20,
+          image: "keyboard.jpg",
+        },
+      ];
+
+      function displayProducts() {
+        const productList = document.getElementById("product-list");
+        products.forEach((product) => {
+          const productCard = `
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="${product.image}" alt="${product.name}" class="card-img-top product-image">
+                            <div class="card-body">
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text">Price: $${product.price}<br>Stock: ${product.stock}</p>
+                                <button class="btn btn-primary" onclick="addToCart(${product.id})">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+          productList.innerHTML += productCard;
+        });
+      }
+
+      function addToCart(productId) {
+        const product = products.find((p) => p.id === productId);
+        if (product && product.stock > 0) {
+          product.stock--;
+          notifyUser(product.name);
+        } else {
+          alert("This product is out of stock.");
+        }
+      }
+
+      function notifyUser(productName) {
+        const notification = document.getElementById("notification");
+        notification.innerHTML = `
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    The ${productName} has been added to your cart successfully.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `;
+      }
+
+      displayProducts();
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
+
+<footer class="text-center bg-dark text-white py-2">
+  <p>Contact Us | Follow us on social media</p>
+</footer>
